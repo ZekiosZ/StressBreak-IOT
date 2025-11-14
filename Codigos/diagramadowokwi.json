@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "author": "StressBreak IoT",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "wokwi-esp32-devkit-v1", "id": "esp", "top": -139.3, "left": 129.4, "attrs": {} },
+    { "type": "wokwi-breadboard", "id": "bb1", "top": 227.4, "left": -16.4, "attrs": {} },
+    { "type": "wokwi-buzzer", "id": "buzz", "top": 194.4, "left": 453, "attrs": {} },
+    {
+      "type": "wokwi-lcd1602",
+      "id": "lcd1",
+      "top": -12.8,
+      "left": 332,
+      "attrs": { "pins": "i2c" }
+    },
+    {
+      "type": "wokwi-photoresistor-sensor",
+      "id": "ldr1",
+      "top": -64,
+      "left": -200.8,
+      "attrs": {}
+    },
+    { "type": "wokwi-potentiometer", "id": "pot1", "top": -174.1, "left": 28.6, "attrs": {} },
+    { "type": "wokwi-dht22", "id": "dht1", "top": 67.5, "left": 282.6, "attrs": {} }
+  ],
+  "connections": [
+    [ "buzz:1", "esp:27", "green", [] ],
+    [ "buzz:2", "esp:GND", "black", [] ],
+    [ "esp:3V3", "bb1:tp.1", "green", [ "v57.6", "h-125.1" ] ],
+    [ "bb1:51t.b", "esp:D27", "green", [ "v-86.4", "h-441.6", "v-96" ] ],
+    [ "bb1:50t.b", "bb1:tn.36", "green", [ "v0", "h-57.6" ] ],
+    [ "lcd1:GND", "bb1:tn.20", "black", [ "h0" ] ],
+    [ "lcd1:VCC", "bb1:tp.21", "red", [ "h0" ] ],
+    [ "lcd1:SDA", "esp:D21", "green", [ "h-67.2", "v0.2" ] ],
+    [ "lcd1:SCL", "esp:D22", "green", [ "h-86.4", "v-95.7" ] ],
+    [ "esp:GND.1", "bb1:tn.2", "black", [ "h18.9", "v115.1", "h-192" ] ],
+    [ "ldr1:AO", "esp:D34", "green", [ "h38.4", "v-10.3" ] ],
+    [ "ldr1:VCC", "bb1:tp.5", "red", [ "h0" ] ],
+    [ "ldr1:GND", "bb1:tn.6", "black", [ "h0" ] ],
+    [ "buzz:1", "bb1:50t.a", "", [ "$bb" ] ],
+    [ "buzz:2", "bb1:51t.a", "", [ "$bb" ] ],
+    [ "pot1:VCC", "bb1:tp.8", "red", [ "v278.4", "h28" ] ],
+    [ "pot1:GND", "bb1:tn.9", "black", [ "v38.4", "h28.8" ] ],
+    [ "pot1:SIG", "esp:D35", "green", [ "v38.4", "h-0.4", "v-19.2" ] ],
+    [ "dht1:GND", "bb1:tn.27", "black", [ "v0" ] ],
+    [ "dht1:VCC", "bb1:tp.25", "red", [ "v0" ] ],
+    [ "dht1:SDA", "esp:D4", "green", [ "v9.6", "h-67.1", "v-211.2" ] ]
+  ],
+  "dependencies": {}
+}

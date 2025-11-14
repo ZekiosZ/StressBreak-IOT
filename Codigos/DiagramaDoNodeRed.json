@@ -1,0 +1,353 @@
+[
+    {
+        "id": "8c1b1d03e5f0c001",
+        "type": "tab",
+        "label": "StressBreak Dashboard",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "aa0f2b8f7cb6ba2e",
+        "type": "mqtt in",
+        "z": "8c1b1d03e5f0c001",
+        "name": "StressIndex (/attrs)",
+        "topic": "/TEF/device070/attrs",
+        "qos": "0",
+        "datatype": "auto",
+        "broker": "f7d5b0f7a4c9d001",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 170,
+        "y": 80,
+        "wires": [
+            [
+                "4adbb0657c829ff6"
+            ]
+        ]
+    },
+    {
+        "id": "4adbb0657c829ff6",
+        "type": "function",
+        "z": "8c1b1d03e5f0c001",
+        "name": "Parse Stress",
+        "func": "let s = msg.payload.toString();\nlet p = s.split(\"|\");\nif (p.length >= 2 && p[0] === \"s\") {\n    msg.payload = Number(p[1]);\n    return msg;\n}\nreturn null;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 400,
+        "y": 80,
+        "wires": [
+            [
+                "5b21d0d1a77ee54b",
+                "cc7dc20482bd9ab1",
+                "453cae402d7b2a78"
+            ]
+        ]
+    },
+    {
+        "id": "5b21d0d1a77ee54b",
+        "type": "ui_gauge",
+        "z": "8c1b1d03e5f0c001",
+        "name": "Stress Gauge",
+        "group": "6bb8076e1af6f703",
+        "order": 1,
+        "width": 6,
+        "height": 5,
+        "gtype": "gage",
+        "title": "Stress (%)",
+        "label": "%",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "100",
+        "x": 660,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "cc7dc20482bd9ab1",
+        "type": "ui_chart",
+        "z": "8c1b1d03e5f0c001",
+        "name": "Stress Historico",
+        "group": "6bb8076e1af6f703",
+        "order": 2,
+        "width": 12,
+        "height": 4,
+        "label": "Histórico de Stress",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "0",
+        "ymax": "100",
+        "removeOlder": "20",
+        "removeOlderPoints": "",
+        "cutout": "",
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 660,
+        "y": 120,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "453cae402d7b2a78",
+        "type": "function",
+        "z": "8c1b1d03e5f0c001",
+        "name": "Define Pausa?",
+        "func": "let stress = msg.payload;\nlet status = flow.get(\"inBreak\") || false;\n\nif (stress >= 70 && !status) {\n    flow.set(\"inBreak\", true);\n    return { topic: \"/TEF/device070/cmd\", payload: \"device070@on|\", estado: \"PAUSA\" };\n}\n\nif (stress <= 40 && status) {\n    flow.set(\"inBreak\", false);\n    return { topic: \"/TEF/device070/cmd\", payload: \"device070@off|\", estado: \"NORMAL\" };\n}\n\nreturn null;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 420,
+        "y": 180,
+        "wires": [
+            [
+                "4f0dcf0fb8952dbf",
+                "577d958c0cbf861a"
+            ]
+        ]
+    },
+    {
+        "id": "4f0dcf0fb8952dbf",
+        "type": "mqtt out",
+        "z": "8c1b1d03e5f0c001",
+        "name": "Enviar comando",
+        "topic": "",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "f7d5b0f7a4c9d001",
+        "x": 710,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "577d958c0cbf861a",
+        "type": "ui_text",
+        "z": "8c1b1d03e5f0c001",
+        "group": "6bb8076e1af6f703",
+        "order": 3,
+        "width": 6,
+        "height": 1,
+        "name": "Status",
+        "label": "Estado:",
+        "format": "{{msg.estado}}",
+        "layout": "row-spread",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": "",
+        "color": "#000000",
+        "x": 690,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "173c860b2e8ba3f0",
+        "type": "mqtt in",
+        "z": "8c1b1d03e5f0c001",
+        "name": "Luminosidade",
+        "topic": "/TEF/device070/attrs/p",
+        "qos": "0",
+        "datatype": "auto-detect",
+        "broker": "f7d5b0f7a4c9d001",
+        "nl": false,
+        "rap": false,
+        "inputs": 0,
+        "x": 170,
+        "y": 330,
+        "wires": [
+            [
+                "25c1a67d3f648e7a"
+            ]
+        ]
+    },
+    {
+        "id": "25c1a67d3f648e7a",
+        "type": "ui_gauge",
+        "z": "8c1b1d03e5f0c001",
+        "name": "Luminosidade Gauge",
+        "group": "b44e0c266ca5c622",
+        "order": 1,
+        "width": 6,
+        "height": 4,
+        "gtype": "gage",
+        "title": "Luminosidade (%)",
+        "label": "%",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 690,
+        "y": 330,
+        "wires": []
+    },
+    {
+        "id": "4a3ecaefeeb2bf24",
+        "type": "mqtt in",
+        "z": "8c1b1d03e5f0c001",
+        "name": "Umidade",
+        "topic": "/TEF/device070/attrs/h",
+        "qos": "0",
+        "datatype": "auto-detect",
+        "broker": "f7d5b0f7a4c9d001",
+        "nl": false,
+        "rap": false,
+        "inputs": 0,
+        "x": 150,
+        "y": 390,
+        "wires": [
+            [
+                "1793261e3146aec4"
+            ]
+        ]
+    },
+    {
+        "id": "1793261e3146aec4",
+        "type": "ui_gauge",
+        "z": "8c1b1d03e5f0c001",
+        "name": "Umidade Gauge",
+        "group": "b44e0c266ca5c622",
+        "order": 2,
+        "width": 6,
+        "height": 4,
+        "gtype": "gage",
+        "title": "Umidade (%)",
+        "label": "%",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 680,
+        "y": 390,
+        "wires": []
+    },
+    {
+        "id": "c4b6857e9e605943",
+        "type": "mqtt in",
+        "z": "8c1b1d03e5f0c001",
+        "name": "Temperatura",
+        "topic": "/TEF/device070/attrs/t",
+        "qos": "0",
+        "datatype": "auto-detect",
+        "broker": "f7d5b0f7a4c9d001",
+        "nl": false,
+        "rap": false,
+        "inputs": 0,
+        "x": 160,
+        "y": 450,
+        "wires": [
+            [
+                "be94961136ad401f"
+            ]
+        ]
+    },
+    {
+        "id": "be94961136ad401f",
+        "type": "ui_gauge",
+        "z": "8c1b1d03e5f0c001",
+        "name": "Temperatura Gauge",
+        "group": "b44e0c266ca5c622",
+        "order": 3,
+        "width": 6,
+        "height": 4,
+        "gtype": "gage",
+        "title": "Temperatura (°C)",
+        "label": "°C",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "50",
+        "x": 690,
+        "y": 450,
+        "wires": []
+    },
+    {
+        "id": "f7d5b0f7a4c9d001",
+        "type": "mqtt-broker",
+        "name": "FIWARE Broker",
+        "broker": "44.223.43.74",
+        "port": "1883",
+        "clientid": "node-red-stress",
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60"
+    },
+    {
+        "id": "6bb8076e1af6f703",
+        "type": "ui_group",
+        "name": "Stress",
+        "tab": "5cd5afaa076820c9",
+        "order": 1,
+        "disp": true,
+        "width": 12
+    },
+    {
+        "id": "b44e0c266ca5c622",
+        "type": "ui_group",
+        "name": "Ambiente",
+        "tab": "5cd5afaa076820c9",
+        "order": 2,
+        "disp": true,
+        "width": 12
+    },
+    {
+        "id": "5cd5afaa076820c9",
+        "type": "ui_tab",
+        "name": "StressBreak",
+        "icon": "dashboard",
+        "order": 1
+    },
+    {
+        "id": "94997fc80d48706d",
+        "type": "global-config",
+        "env": [],
+        "modules": {
+            "node-red-dashboard": "3.6.6"
+        }
+    }
+]
