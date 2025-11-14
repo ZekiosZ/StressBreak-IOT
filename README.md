@@ -4,6 +4,11 @@ MQTT + Node-RED + ESP32 + Wokwi
 
 ------------------------------------------------------------------------
 
+## Link para acesso ao projeto pelo wokwi
+[Clique Aqui](https://wokwi.com/projects/447535451473761281)
+
+------------------------------------------------------------------------
+
 ## 📌 Resumo do Projeto
 
 O **StressBreak IoT** é um sistema que monitora sinais ambientais e
@@ -122,15 +127,6 @@ Certifique-se que os tópicos estão liberados conforme:
     /TEF/device070/cmd
 
 Conecte no aplicativo MyMqtt com a ip do seu servidor fiware, usando os topicos acima, e vc recebera os dados do mesmo que foi escolhido
-------------------------------------------------------------------------
-
-## 🏁 Resumo Do projeto
-
-Este projeto integra hardware (ESP32 + sensores), backend (FIWARE/Helix)
-e frontend (Node-RED) para criar um sistema inteligente de monitoramento
-de estresse em home office, capaz de sugerir pausas automaticamente e
-gerar insights sobre o ambiente de trabalho.
-
 ------------------------------------------------------------------------
 
 Desenvolvido como Entrega para a Global Solution Fiap 2025 para a materia de Edge Computing sistems.
