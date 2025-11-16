@@ -3,6 +3,10 @@
 MQTT + Node-RED + ESP32 + Wokwi
 
 ------------------------------------------------------------------------
+## Link de acesso ao video de apresentação
+[Clique aqui](https://youtu.be/i8cLwum3BZ4)
+
+------------------------------------------------------------------------
 
 ## Link para acesso ao projeto pelo wokwi
 [Clique Aqui](https://wokwi.com/projects/447535451473761281)
